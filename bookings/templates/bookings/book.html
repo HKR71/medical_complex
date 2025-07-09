@@ -1,0 +1,42 @@
+{% extends 'bookings/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Book an Appointment</h1>
+    
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    
+    <div class="card shadow">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    <strong>Error!</strong> Please correct the issues below.
+                </div>
+                {% endif %}
+                
+                {{ form.as_p }}
+                
+                <div class="mb-3">
+                    <label class="form-label">Select Doctor</label>
+                    <select name="doctor" class="form-select">
+                        {% for doctor in doctors %}
+                        <option value="{{ doctor.id }}" 
+                            {% if selected_doctor_id == doctor.id|stringformat:"s" %}selected{% endif %}>
+                            Dr. {{ doctor.user.get_full_name }} - {{ doctor.specialty.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Book Appointment</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

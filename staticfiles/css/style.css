@@ -1,0 +1,110 @@
+:root {
+    --primary: #0d6efd;
+    --secondary: #6c757d;
+    --success: #198754;
+    --light: #f8f9fa;
+    --dark: #212529;
+    --accent: #20c997;
+    --gradient: linear-gradient(135deg, var(--primary), var(--accent));
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fafbfe;
+    color: #4a5568;
+    padding-top: 80px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto Slab', serif;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.navbar {
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    background: var(--gradient) !important;
+}
+
+.hero-section {
+    background: url('../img/hero-bg.svg') no-repeat center right;
+    background-size: contain;
+}
+
+.icon-box {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover .icon-box {
+    transform: translateY(-10px);
+}
+
+.divider {
+    width: 80px;
+    height: 4px;
+    background: var(--gradient);
+    border-radius: 2px;
+    margin: 1rem auto;
+}
+
+.card {
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.btn {
+    border-radius: 50px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 10px 25px;
+}
+
+.btn-primary {
+    background: var(--gradient);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(13, 110, 253, 0.3);
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 70px;
+    }
+    
+    .hero-section {
+        text-align: center;
+        padding: 2rem 0;
+    }
+    
+    .hero-section img {
+        max-height: 300px;
+    }
+}
