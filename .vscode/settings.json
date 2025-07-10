@@ -1,0 +1,76 @@
+{
+    "python.defaultInterpreterPath": "F:/medical_complex/new_venv/Scripts/python.exe",
+    "python.analysis.extraPaths": [
+        "F:/medical_complex/new_venv/Lib/site-packages",
+        "${workspaceFolder}/apps",
+        "${workspaceFolder}/medcomplex",
+        "${workspaceFolder}"
+    ],
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportMissingImports": "none",
+        "reportMissingModuleSource": "none",
+        "reportUndefinedVariable": "none",
+        "reportOptionalMemberAccess": "none",
+        "reportOptionalCall": "none",
+        "reportGeneralTypeIssues": "none"
+    },
+    "python.analysis.exclude": [
+        "**/migrations/**",
+        "**/settings.py",
+        "**/wsgi.py",
+        "**/asgi.py",
+        "**/site-packages/black/**" // Add this to exclude black package
+    ],
+    "python.autoComplete.extraPaths": [
+        "F:/medical_complex/new_venv/Lib/site-packages",
+        "${workspaceFolder}/apps",
+        "${workspaceFolder}/medcomplex",
+        "${workspaceFolder}"
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.formatting.provider": "black",
+    "python.formatting.blackPath": "F:/medical_complex/new_venv/Scripts/black.exe",
+    "python.terminal.activateEnvironment": true,
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/.git": true,
+        "**/.gitignore": true,
+        "**/.env": true,
+        "staticfiles": true,
+        "media": true,
+        "db.sqlite3": true
+    },
+    "editor.formatOnSave": true,
+    "django.enabled": true,
+    "django.template.debug": true,
+    "emmet.includeLanguages": {
+        "django-html": "html"
+    },
+    "files.associations": {
+        "**/*.html": "django-html",
+        "**/templates/**/*.html": "django-html"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features" // Corrected
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features" // Corrected
+    },
+    "[django-html]": {
+        "editor.defaultFormatter": "vscode.html-language-features", // Corrected
+        "editor.quickSuggestions": {
+            "other": true,
+            "comments": false,
+            "strings": true
+        }
+    },
+    "files.watcherExclude": {
+        "**/__pycache__/**": true,
+        "**/.git/**": true,
+        "**/staticfiles/**": true,
+        "**/media/**": true,
+        "**/new_venv/**": true
+    }
+}

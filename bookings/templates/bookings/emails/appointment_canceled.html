@@ -1,0 +1,94 @@
+{% extends 'bookings/base.html' %}
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #dc3545;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .content {
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .appointment-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #777;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Appointment Canceled</h1>
+        </div>
+        <div class="content">
+            <p>Hello {{ name }},</p>
+            <p>We're sorry to inform you that your appointment with Dr. {{ doctor }} has been canceled.</p>
+
+            <div class="appointment-card">
+                <h3>Appointment Details</h3>
+                <p><strong>Date:</strong> {{ date }}</p>
+                <p><strong>Time:</strong> {{ time }}</p>
+                <p><strong>Reason:</strong> {{ reason }}</p>
+                <p><strong>Status:</strong> Canceled</p>
+            </div>
+
+            <p>If you believe this was a mistake or would like to reschedule, please contact our office at (123)
+                456-7890 or click the button below to book a new appointment.</p>
+
+            <a href="{% url 'book' %}" class="btn">Book New Appointment</a>
+
+            <div class="footer">
+                <p>We apologize for any inconvenience this may cause.</p>
+                <p>MedComplex Healthcare Center<br>123 Medical Plaza, Health City</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock %}
