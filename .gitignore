@@ -1,4 +1,32 @@
-.env
-db.sqlite3
+# Django
+*.log
+*.pot
+*.pyc
 __pycache__/
+db.sqlite3
+media/
+staticfiles/
+
+# Environments
+.env
+.venv
+env/
+venv/
+new_venv/
+venv*/
+.env*/
+env*/
+
+# IDE
 .vscode/
+.idea/
+*.sublime-*
+*.code-workspace
+
+# System
+.DS_Store
+Thumbs.db
+
+# Project-specific
+# Add any other files/directories you don't want tracked
+# Example: uploaded files, sensitive configs, etc.
