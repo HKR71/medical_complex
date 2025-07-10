@@ -1,0 +1,15 @@
+{
+    "exclude": [
+        "**/migrations/**",
+        "**/staticfiles/**",
+        "**/media/**",
+        "**/new_venv/**",
+        "**/.git/**"
+    ],
+    "ignore": [
+        "**/*.sqlite3",
+        "**/*.pyc"
+    ],
+    "typeCheckingMode": "off",
+    "disableTypeInfo": true
+}
