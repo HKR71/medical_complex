@@ -12,13 +12,18 @@ except ImportError:
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Add apps directory to Python path (FIXED)
+# Add apps directory to Python path
 sys.path.insert(0, str(BASE_DIR / 'apps'))
 
 # Security settings with fallbacks
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-123')
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'  # Default to False in production
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+
+# Add PythonAnywhere domain to allowed hosts
+PA_USERNAME = os.environ.get('PYTHONANYWHERE_USERNAME', 'yourusername')
+if PA_USERNAME:
+    ALLOWED_HOSTS.append(f'{PA_USERNAME}.pythonanywhere.com')
 
 # Security headers (production only)
 if not DEBUG:
@@ -70,25 +75,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'medcomplex.wsgi.application'
 
-# Database configuration
-if 'test' in sys.argv or DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+# Database configuration - Use SQLite for PythonAnywhere free tier
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME', 'medical_db'),
-            'USER': os.environ.get('DB_USER', 'db_user'),
-            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-            'HOST': os.environ.get('DB_HOST', 'localhost'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
-        }
-    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -136,8 +129,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'https://your-production-domain.com'
-]
+    f'https://{PA_USERNAME}.pythonanywhere.com'
+] if PA_USERNAME else []
 
 # Email configuration
 if DEBUG:
