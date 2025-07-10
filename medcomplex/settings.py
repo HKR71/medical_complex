@@ -2,7 +2,6 @@ import os
 import sys
 from pathlib import Path
 
-# Attempt to load dotenv only if available
 try:
     from dotenv import load_dotenv
     load_dotenv()
@@ -11,21 +10,19 @@ except ImportError:
     print("python-dotenv not installed. Using system environment variables.")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Add apps directory to Python path
 sys.path.insert(0, str(BASE_DIR / 'apps'))
 
-# Security settings with fallbacks
+# Security settings
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-123')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'  # Default to False in production
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
-# Add PythonAnywhere domain to allowed hosts
+# Add PythonAnywhere domain
 PA_USERNAME = os.environ.get('PYTHONANYWHERE_USERNAME', 'yourusername')
 if PA_USERNAME:
-    ALLOWED_HOSTS.append(f'{PA_USERNAME}.pythonanywhere.com')
+    ALLOWED_HOSTS.append(f'hakarsalih.pythonanywhere.com')
 
-# Security headers (production only)
+# Security headers
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
@@ -75,7 +72,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'medcomplex.wsgi.application'
 
-# Database configuration - Use SQLite for PythonAnywhere free tier
+# SQLite Database (Force this configuration)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -129,7 +126,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    f'https://{PA_USERNAME}.pythonanywhere.com'
+    f'https://hakarsalih.pythonanywhere.com'
 ] if PA_USERNAME else []
 
 # Email configuration
@@ -144,3 +141,12 @@ else:
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '123456789zz')
     DEFAULT_FROM_EMAIL = os.environ.get(
         'DEFAULT_FROM_EMAIL', 'noreply@medcomplex.example')
+
+# Debug output
+print(f"\n\n===== CONFIGURATION =====")
+print(f"Using database engine: {DATABASES['default']['ENGINE']}")
+print(f"DEBUG mode: {DEBUG}")
+print(f"Allowed hosts: {ALLOWED_HOSTS}")
+print(f"Static root: {STATIC_ROOT}")
+print(f"Media root: {MEDIA_ROOT}")
+print("=========================\n\n")
