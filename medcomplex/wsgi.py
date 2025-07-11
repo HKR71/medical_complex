@@ -1,16 +1,21 @@
-"""
-WSGI config for medcomplex project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
-"""
-
+# medcomplex/wsgi.py
 import os
+import sys
+import logging
 
-from django.core.wsgi import get_wsgi_application
+path = '/home/hakarsalih/medical_complex'
+if path not in sys.path:
+    sys.path.append(path)
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'medcomplex.settings')
 
-application = get_wsgi_application()
+# Add logging
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
+try:
+    from django.core.wsgi import get_wsgi_application
+    application = get_wsgi_application()
+    logging.info("WSGI application loaded successfully")
+except Exception as e:
+    logging.exception("WSGI application failed to load")
+    raise

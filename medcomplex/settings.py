@@ -2,7 +2,6 @@ import os
 import sys
 from pathlib import Path
 
-# Attempt to load dotenv only if available
 try:
     from dotenv import load_dotenv
     load_dotenv()
@@ -11,16 +10,20 @@ except ImportError:
     print("python-dotenv not installed. Using system environment variables.")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# Add apps directory to Python path (FIXED)
 sys.path.insert(0, str(BASE_DIR / 'apps'))
 
-# Security settings with fallbacks
+# Security settings
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-123')
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
-# Security headers (production only)
+# Add PythonAnywhere domain
+PA_USERNAME = os.environ.get('PYTHONANYWHERE_USERNAME', 'yourusername')
+if PA_USERNAME:
+    ALLOWED_HOSTS.append(f'hakarsalih.pythonanywhere.com')
+
+# Security headers
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
@@ -70,25 +73,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'medcomplex.wsgi.application'
 
-# Database configuration
-if 'test' in sys.argv or DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+# SQLite Database (Force this configuration)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME', 'medical_db'),
-            'USER': os.environ.get('DB_USER', 'db_user'),
-            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
-            'HOST': os.environ.get('DB_HOST', 'localhost'),
-            'PORT': os.environ.get('DB_PORT', '5432'),
-        }
-    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -136,8 +127,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'https://your-production-domain.com'
-]
+    f'https://hakarsalih.pythonanywhere.com'
+] if PA_USERNAME else []
 
 # Email configuration
 if DEBUG:
@@ -147,7 +138,16 @@ else:
     EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
     EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
     EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
-    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
-    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'hakarsalih')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '123456789zz')
     DEFAULT_FROM_EMAIL = os.environ.get(
         'DEFAULT_FROM_EMAIL', 'noreply@medcomplex.example')
+
+# Debug output
+print(f"\n\n===== CONFIGURATION =====")
+print(f"Using database engine: {DATABASES['default']['ENGINE']}")
+print(f"DEBUG mode: {DEBUG}")
+print(f"Allowed hosts: {ALLOWED_HOSTS}")
+print(f"Static root: {STATIC_ROOT}")
+print(f"Media root: {MEDIA_ROOT}")
+print("=========================\n\n")
