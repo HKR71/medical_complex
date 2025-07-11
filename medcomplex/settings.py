@@ -16,6 +16,7 @@ sys.path.insert(0, str(BASE_DIR / 'apps'))
 # Security settings
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-123')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+master
 ALLOWED_HOSTS = os.environ.get(
     'ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
@@ -24,6 +25,15 @@ PA_USERNAME = os.environ.get('PYTHONANYWHERE_USERNAME', 'hakarsalih')
 if PA_USERNAME:
     ALLOWED_HOSTS.append(f'{PA_USERNAME}.pythonanywhere.com')
 
+=======
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+
+# Add PythonAnywhere domain
+PA_USERNAME = os.environ.get('PYTHONANYWHERE_USERNAME', 'yourusername')
+if PA_USERNAME:
+    ALLOWED_HOSTS.append(f'hakarsalih.pythonanywhere.com')
+
+master
 # Security headers
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
@@ -74,7 +84,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'medcomplex.wsgi.application'
 
+master
 # Database
+=======
+# SQLite Database (Force this configuration)
+master
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -128,6 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
+master
     f'https://{PA_USERNAME}.pythonanywhere.com'
 ] if PA_USERNAME else []
 
@@ -148,10 +163,33 @@ DEFAULT_FROM_EMAIL = os.environ.get(
 print("\n===== CONFIGURATION =====")
 print(f"BASE_DIR: {BASE_DIR}")
 print(f"Python path: {sys.path}")
+
+    f'https://hakarsalih.pythonanywhere.com'
+] if PA_USERNAME else []
+
+# Email configuration
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
+    EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'hakarsalih')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '123456789zz')
+    DEFAULT_FROM_EMAIL = os.environ.get(
+        'DEFAULT_FROM_EMAIL', 'noreply@medcomplex.example')
+
+# Debug output
+print(f"\n\n===== CONFIGURATION =====")
+master
 print(f"Using database engine: {DATABASES['default']['ENGINE']}")
 print(f"DEBUG mode: {DEBUG}")
 print(f"Allowed hosts: {ALLOWED_HOSTS}")
 print(f"Static root: {STATIC_ROOT}")
 print(f"Media root: {MEDIA_ROOT}")
+master
 print(f"CSRF Trusted Origins: {CSRF_TRUSTED_ORIGINS}")
 print("=========================\n")
+print("=========================\n\n")
+master
