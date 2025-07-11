@@ -11,12 +11,18 @@ except ImportError:
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+sys.path.insert(0, str(BASE_DIR / 'apps'))
 
 # Security settings
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-dev-key-123')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'hakarsalih.pythonanywhere.com']
+ALLOWED_HOSTS = os.environ.get(
+    'ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+
+# Add PythonAnywhere domain
+PA_USERNAME = os.environ.get('PYTHONANYWHERE_USERNAME', 'hakarsalih')
+if PA_USERNAME:
+    ALLOWED_HOSTS.append(f'{PA_USERNAME}.pythonanywhere.com')
 
 # Security headers
 if not DEBUG:
@@ -122,18 +128,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'https://hakarsalih.pythonanywhere.com'
-]
+    f'https://{PA_USERNAME}.pythonanywhere.com'
+] if PA_USERNAME else []
 
-# Email configuration
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' if DEBUG else 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+# Email configuration - SECURE VERSION
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' if DEBUG \
+    else 'django.core.mail.backends.smtp.EmailBackend'
+
+# Never put real credentials in settings files!
+EMAIL_HOST = os.environ.get('EMAIL_HOST', '')
 EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.environ.get(
-    'DEFAULT_FROM_EMAIL', 'noreply@medcomplex.example')
+    'DEFAULT_FROM_EMAIL', 'noreply@example.com')
 
 # Debug output
 print("\n===== CONFIGURATION =====")
@@ -144,4 +153,5 @@ print(f"DEBUG mode: {DEBUG}")
 print(f"Allowed hosts: {ALLOWED_HOSTS}")
 print(f"Static root: {STATIC_ROOT}")
 print(f"Media root: {MEDIA_ROOT}")
+print(f"CSRF Trusted Origins: {CSRF_TRUSTED_ORIGINS}")
 print("=========================\n")
